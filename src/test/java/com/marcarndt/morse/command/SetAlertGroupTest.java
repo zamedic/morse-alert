@@ -17,36 +17,64 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 public class SetAlertGroupTest {
 
+  /**
+   * The Alert service.
+   */
   @Mock
-  AlertService alertService;
+  private transient AlertService alertService;
+  /**
+   * The Morse bot.
+   */
   @Mock
-  MorseBot morseBot;
+  private transient MorseBot morseBot;
+  /**
+   * The Chat.
+   */
   @Mock
-  Chat chat;
+  private transient Chat chat;
 
+  /**
+   * The Set alert group.
+   */
   @InjectMocks
-  SetAlertGroup setAlertGroup;
+  private transient SetAlertGroup setAlertGroup;
 
+  /**
+   * Gets role.
+   *
+   */
   @org.junit.Test
-  public void getRole() throws Exception {
+  public void getRole() {
     Assert.assertEquals(UserService.ADMIN, setAlertGroup.getRole());
   }
 
+  /**
+   * Perform command.
+   *
+   */
   @org.junit.Test
-  public void performCommand() throws Exception {
+  public void performCommand()  {
     Mockito.when(chat.getId()).thenReturn(1234l);
     setAlertGroup.performCommand(morseBot, null, chat, null);
     Mockito.verify(alertService).setGroup(1234l);
     Mockito.verify(morseBot).sendMessage("Alert group has been set to this group", "1234");
   }
 
+  /**
+   * Gets command identifier.
+   *
+   */
   @org.junit.Test
-  public void getCommandIdentifier() throws Exception {
+  public void getCommandIdentifier() {
     Assert.assertEquals("setAlertGroup", setAlertGroup.getCommandIdentifier());
   }
 
+  /**
+   * Gets description.
+   *
+   */
   @org.junit.Test
-  public void getDescription() throws Exception {
+  public void getDescription()  {
     Assert
         .assertEquals("Tells the bot to send alerts to this group", setAlertGroup.getDescription());
   }
