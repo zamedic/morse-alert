@@ -2,9 +2,19 @@ package com.marcarndt.morse.rest;
 
 import com.marcarndt.morse.MorseBotException;
 import com.marcarndt.morse.service.AlertService;
+import com.vdurmont.emoji.EmojiManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.io.StringReader;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,6 +28,10 @@ import javax.ws.rs.core.Response;
 @Path("alert")
 public class Alert {
 
+  /**
+   * Logger.
+   */
+  private static final Logger LOG = Logger.getLogger(Alert.class.getName());
   /**
    * Alert Service.
    */
@@ -45,16 +59,58 @@ public class Alert {
   /**
    * Send slack message response.
    *
-   * @param message the message
+   * @param body the message
    * @return the response
    */
   @POST
   @Consumes("application/json")
   @ApiOperation(value = "Accepts a Slack Message")
-  @Path("slack")
-  public Response sendSlackMessage(final String message) {
+  @Path("delivery")
+  public Response sendDeliveryMessage(final String body) {
     try {
-      alertService.sendAlert(message);
+
+      LOG.info(body);
+
+      final JsonReader jsonReader = Json.createReader(new StringReader(body));
+      final JsonObject jsonObject = jsonReader.readObject();
+      final String text = jsonObject.getString("text");
+      final StringTokenizer stringTokenizer = new StringTokenizer(text, "\n");
+      String line1 = stringTokenizer.nextToken();
+      final String message = stringTokenizer.nextToken();
+      line1 = line1.replace("<", "");
+      line1 = line1.replace(">", "");
+      final StringTokenizer tokenizerPipe = new StringTokenizer(line1, "|");
+      final String url = tokenizerPipe.nextToken();
+      final String description = tokenizerPipe.nextToken();
+
+      final JsonArray jsonArray = jsonObject.getJsonArray("attachments");
+      final JsonObject arrayValue = (JsonObject) jsonArray.get(0);
+
+      final JsonArray fields = arrayValue.getJsonArray("fields");
+
+      final StringBuilder fieldSting = new StringBuilder();
+
+      String project = "";
+
+      for (final JsonValue field : fields) {
+        final JsonObject jsonField = (JsonObject) field;
+        final String title = jsonField.getString("title");
+        final String value = jsonField.getString("value");
+
+        if ("Project:".equals(title)) {
+          project = value;
+        } else {
+          fieldSting.append(title).append(value).append('\n');
+        }
+      }
+
+      final StringBuilder stringBuilder = new StringBuilder(100);
+      stringBuilder.append(EmojiManager.getForAlias("truck").getUnicode())
+          .append("<b>Chef Delivery</b>\n Project: ").append(project).append('\n')
+          .append(message).append("\n <a href=\"").append(url).append("\">")
+          .append(description).append("</a> \n").append(fieldSting.toString());
+
+      alertService.sendAlert(stringBuilder.toString(), true);
       return Response.ok().build();
     } catch (MorseBotException e) {
       return Response.serverError().entity(e.getMessage()).build();

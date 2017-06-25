@@ -46,10 +46,14 @@ public class AlertService {
    * @throws MorseBotException the morse bot exception
    */
   public void sendAlert(String message) throws MorseBotException {
+    sendAlert(message,false);
+  }
+
+  public void sendAlert(String message, boolean html) throws MorseBotException {
     AlertGroup alertGroup = mongoService.getDatastore().createQuery(AlertGroup.class).get();
     if(alertGroup == null){
       throw new MorseBotException("Alert group has not been set.");
     }
-    morseBot.sendMessage(message,alertGroup.getGroupId().toString());
+    morseBot.sendMessage(message,alertGroup.getGroupId().toString(),html);
   }
 }

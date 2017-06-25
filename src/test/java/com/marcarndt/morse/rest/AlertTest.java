@@ -33,8 +33,34 @@ public class AlertTest {
 
   @Test
   public void sendSlackMessage() throws Exception {
-    Response response = alert.sendSlackMessage("test slack message");
-    Mockito.verify(alertService).sendAlert("test slack message");
+    Response response = alert.sendDeliveryMessage("{\n"
+        + "  \"username\": \"Chef Automate\",\n"
+        + "  \"icon_url\": \"https://delivery-assets.chef.io/img/cheficon48x48.png\",\n"
+        + "  \"text\": \"<https://autobot-wkbxttwhfapcogjk.us-east-1.opsworks-cm.io/e/default/#/organizations/Marc/projects/swarm/changes/e676e8ab-e243-4def-b9bf-12af06ac5305/status|adding aws monitoring>\\nChange failed at the Acceptance stage.\",\n"
+        + "  \"attachments\": [\n"
+        + "    {\n"
+        + "      \"fallback\": \"<https://autobot-wkbxttwhfapcogjk.us-east-1.opsworks-cm.io/e/default/#/organizations/Marc/projects/swarm/changes/e676e8ab-e243-4def-b9bf-12af06ac5305/status|adding aws monitoring>\\nChange failed at the Acceptance stage.\",\n"
+        + "      \"color\": \"#D00000\",\n"
+        + "      \"fields\": [\n"
+        + "        {\n"
+        + "          \"title\": \"Project:\",\n"
+        + "          \"value\": \"swarm\"\n"
+        + "        },\n"
+        + "        {\n"
+        + "          \"title\": \"Change submitted by:\",\n"
+        + "          \"value\": \"zamedic\",\n"
+        + "          \"short\": \"true\"\n"
+        + "        }\n"
+        + "      ]\n"
+        + "    }\n"
+        + "  ]\n"
+        + "}");
+    Mockito.verify(alertService).sendAlert("\uD83D\uDE9A<b>Chef Delivery</b>\n"
+        + " Project: swarm\n"
+        + "Change failed at the Acceptance stage.\n"
+        + " <a href=\"https://autobot-wkbxttwhfapcogjk.us-east-1.opsworks-cm.io/e/default/#/organizations/Marc/projects/swarm/changes/e676e8ab-e243-4def-b9bf-12af06ac5305/status\">adding aws monitoring</a> \n"
+        + "Change submitted by:zamedic\n",true);
+
     assertEquals(200,response.getStatus());
   }
 
