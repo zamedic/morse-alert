@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
  * Created by arndt on 2017/06/24.
  */
 
-@Api
+@Api(value = "Alert Service")
 @Path("alert")
 public class Alert {
 
