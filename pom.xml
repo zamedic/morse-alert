@@ -310,6 +310,14 @@
     </snapshotRepository>
   </distributionManagement>
 
+  <repositories>
+    <repository>
+      <name>OSS Nexus</name>
+      <url>https://oss.sonatype.org/content/groups/public/</url>
+      <id>oss</id>
+    </repository>
+  </repositories>
+
   <developers>
     <developer>
       <name>Marc Arndt</name>
