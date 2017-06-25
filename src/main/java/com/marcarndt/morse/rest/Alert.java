@@ -34,8 +34,21 @@ public class Alert {
     return Response.ok().build();
   }
 
+  @POST
+  @Consumes("application/json")
+  @ApiOperation(value = "Accepts a Slack Message")
+  @Path("slack")
+  public Response sendSlackMessage(String message) {
+    try {
+      alertService.sendAlert(message);
+      return Response.ok().build();
+    } catch (MorseBotException e) {
+      return Response.serverError().entity(e.getMessage()).build();
+    }
+  }
+
   @GET
-  public Response getStatus(){
+  public Response getStatus() {
     return Response.ok().entity("Listening").build();
   }
 
