@@ -105,15 +105,15 @@ public class Alert {
       }
       Emoji emoji = EmojiManager.getForAlias("interrobang");
 
-      if (message.equals("Verify Passed. Change is ready for review.")) {
+      if ("Verify Passed. Change is ready for review.".equals(message)) {
         emoji = EmojiManager.getForAlias("eyes");
-      } else if (message.equals("Change Approved!")) {
+      } else if ("Change Approved!".equals(message)) {
         emoji = EmojiManager.getForAlias("heavy_check_mark");
-      } else if (message.equals("Acceptance Passed. Change is ready for delivery.")) {
+      } else if ("Acceptance Passed. Change is ready for delivery.".equals(message)) {
         emoji = EmojiManager.getForAlias("package");
-      } else if (message.equals("Change Delivered!")) {
+      } else if ("Change Delivered!".equals(message)) {
         emoji = EmojiManager.getForAlias("heavy_check_mark");
-      } else if (message.equals("Delivered stage has completed for this change.")) {
+      } else if ("Delivered stage has completed for this change.".equals(message)) {
         emoji = EmojiManager.getForAlias("thumbsup");
       }
 
