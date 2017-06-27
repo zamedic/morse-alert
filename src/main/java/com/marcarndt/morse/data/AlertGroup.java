@@ -15,7 +15,7 @@ public class AlertGroup {
    */
   private Long groupId;
   /**
-   * ID
+   * ID.
    */
   @Id
   private ObjectId objectId;

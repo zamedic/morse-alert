@@ -5,6 +5,7 @@ import com.marcarndt.morse.service.AlertService;
 import com.marcarndt.morse.service.UserService;
 import com.marcarndt.morse.telegrambots.api.objects.Chat;
 import com.marcarndt.morse.telegrambots.api.objects.User;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -31,13 +32,15 @@ public class SetAlertGroup extends BaseCommand {
 
   /**
    * Sets the alert group to the group the group that called the opperation.
+   *
    * @param morseBot morse bot
    * @param user calling user
    * @param chat calling chat
    * @param strings parameters - ignored by the operation
    * @return null
    */
-  protected String performCommand(final MorseBot morseBot, final User user, final Chat chat, final String[] strings) {
+  protected String performCommand(final MorseBot morseBot, final User user, final Chat chat,
+      final String[] strings) {
     alertService.setGroup(chat.getId());
     morseBot.sendMessage("Alert group has been set to this group", chat.getId().toString());
     return null;

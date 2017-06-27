@@ -3,6 +3,7 @@ package com.marcarndt.morse.service;
 import com.marcarndt.morse.MorseBot;
 import com.marcarndt.morse.MorseBotException;
 import com.marcarndt.morse.data.AlertGroup;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -50,7 +51,7 @@ public class AlertService {
   }
 
   /**
-   * Send alert message
+   * Send alert message.
    *
    * @param message message to send
    * @param html true if you are including basic html markup
@@ -58,7 +59,7 @@ public class AlertService {
    */
   public void sendAlert(final String message, final boolean html) throws MorseBotException {
     final AlertGroup alertGroup = mongoService.getDatastore().createQuery(AlertGroup.class).get();
-    if(alertGroup == null){
+    if (alertGroup == null) {
       throw new MorseBotException("Alert group has not been set.");
     }
     morseBot.sendMessage(message,alertGroup.getGroupId().toString(),html);
