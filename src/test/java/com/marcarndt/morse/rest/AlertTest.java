@@ -5,13 +5,14 @@ import static org.junit.Assert.fail;
 
 import com.marcarndt.morse.MorseBotException;
 import com.marcarndt.morse.service.AlertService;
-import javax.ws.rs.core.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import javax.ws.rs.core.Response;
 
 /**
  * Created by arndt on 2017/06/25.
@@ -78,7 +79,7 @@ public class AlertTest {
         + "  ]\n"
         + "}");
     try {
-      Mockito.verify(alertService).sendAlert("\uD83D\uDE9A<b>Chef Delivery</b>\n"
+       Mockito.verify(alertService).sendAlert("\uD83D\uDE9A<b>Chef Delivery</b>\n"
           + " Project: swarm\n"
           + "⁉Change failed at the Acceptance stage.\n"
           + " <a href=\"https://autobot-wkbxttwhfapcogjk.us-east-1.opsworks-cm.io/e/default/#/organizations/Marc/projects/swarm/changes/e676e8ab-e243-4def-b9bf-12af06ac5305/status\">adding aws monitoring</a> \n"
