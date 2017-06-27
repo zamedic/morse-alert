@@ -13,7 +13,10 @@ public class AlertGroup {
   /**
    * The Group id.
    */
-  Long groupId;
+  private Long groupId;
+  /**
+   * ID
+   */
   @Id
   private ObjectId objectId;
 
@@ -31,7 +34,7 @@ public class AlertGroup {
    *
    * @param groupId the group id
    */
-  public void setGroupId(Long groupId) {
+  public void setGroupId(final Long groupId) {
     this.groupId = groupId;
   }
 
@@ -49,7 +52,7 @@ public class AlertGroup {
    *
    * @param objectId the object id
    */
-  public void setObjectId(ObjectId objectId) {
+  public void setObjectId(final ObjectId objectId) {
     this.objectId = objectId;
   }
 }
