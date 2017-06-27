@@ -32,7 +32,6 @@ public class SetAlertGroup extends BaseCommand {
 
   /**
    * Sets the alert group to the group the group that called the opperation.
-   *
    * @param morseBot morse bot
    * @param user calling user
    * @param chat calling chat

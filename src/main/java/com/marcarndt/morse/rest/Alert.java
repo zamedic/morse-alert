@@ -2,6 +2,7 @@ package com.marcarndt.morse.rest;
 
 import com.marcarndt.morse.MorseBotException;
 import com.marcarndt.morse.service.AlertService;
+import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -103,11 +104,25 @@ public class Alert {
           fieldSting.append(title).append(value).append('\n');
         }
       }
+      Emoji emoji = EmojiManager.getForAlias("interrobang");
+
+      if ("Verify Passed. Change is ready for review.".equals(message)) {
+        emoji = EmojiManager.getForAlias("eyes");
+      } else if ("Change Approved!".equals(message)) {
+        emoji = EmojiManager.getForAlias("heavy_check_mark");
+      } else if ("Acceptance Passed. Change is ready for delivery.".equals(message)) {
+        emoji = EmojiManager.getForAlias("package");
+      } else if ("Change Delivered!".equals(message)) {
+        emoji = EmojiManager.getForAlias("heavy_check_mark");
+      } else if ("Delivered stage has completed for this change.".equals(message)) {
+        emoji = EmojiManager.getForAlias("thumbsup");
+      }
 
       final StringBuilder stringBuilder = new StringBuilder(100);
       stringBuilder.append(EmojiManager.getForAlias("truck").getUnicode())
           .append("<b>Chef Delivery</b>\n Project: ").append(project).append('\n')
-          .append(message).append("\n <a href=\"").append(url).append("\">")
+          .append(emoji.getUnicode()).append(message).append("\n <a href=\"").append(url)
+          .append("\">")
           .append(description).append("</a> \n").append(fieldSting.toString());
 
       alertService.sendAlert(stringBuilder.toString(), true);
